@@ -1,0 +1,15 @@
+$font-size-root: 14px;
+
+@import '~vuetify/src/styles/styles.sass';
+
+html {
+  overflow-y: auto !important;
+}
+
+.pointer-hover {
+  cursor: pointer;
+}
+
+.theme--light.v-input--is-disabled {
+  color: rgb(61, 61, 61) !important; 
+}

@@ -1,0 +1,33 @@
+version: "3.7"
+services:
+  admin:
+    build: 
+      dockerfile: dev.Dockerfile
+      context: .
+    volumes:
+      - ./assets:/app/assets
+      - ./components:/app/components
+      - ./constants:/app/constants
+      - ./layouts:/app/layouts
+      - ./middleware:/app/middleware
+      - ./pages:/app/pages
+      - ./plugins:/app/plugins
+      - ./static:/app/static
+      - ./store:/app/store
+    environment:
+      - PORT=80
+      - HOST=0.0.0.0
+      - NODE_ENV=development
+      - API_ENDPOINT=/api
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.admin.rule: Host(`localhost`)
+      traefik.http.routers.admin.entrypoints: web
+      traefik.http.services.admin.loadbalancer.server.port: 80
+    networks:
+      - local
+
+networks:
+  local:
+    external: true
+    name: local

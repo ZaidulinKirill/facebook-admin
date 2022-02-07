@@ -1,0 +1,136 @@
+.v-tabs-bar--is-mobile > .v-slide-group__prev {
+  display: none !important;
+}
+
+@mixin transition-default() {
+  &-enter-active,
+  &-leave-active {
+    transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1);
+  }
+
+  &-move {
+    transition: transform .6s;
+  }
+}
+
+.slide-right {
+  @include transition-default();
+
+  &-enter, &-leave-to { opacity: 0; }
+  &-enter { transform: translateX(15px); }
+  &-leave-to { transform: translateX(-15px); }
+}
+
+.slide-left {
+  @include transition-default();
+
+  &-enter, &-leave-to { opacity: 0; }
+  &-enter { transform: translateX(-15px); }
+  &-leave-to { transform: translateX(15px); }
+}
+
+.fill-height {
+  padding-bottom: 30px !important;
+}
+
+.no-title .v-card__title {
+  padding: 0px !important;
+}
+
+.h-full {
+  height: 100%;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.overflow-y-scroll {
+  overflow-y: scroll;
+}
+
+.overflow-y-auto {
+  overflow-y: auto !important;
+}
+
+.theme--dark.v-navigation-drawer {
+  background-color: #2A3042 !important;
+}
+
+// .theme--dark.v-input:not(:hover) input {
+//   color: #cecece !important;
+// }
+
+// .theme--dark.v-input:not(:hover) .v-icon {
+//   color: #cecece !important;
+// }
+
+// .theme--dark.v-icon:not(:hover) {
+//   color: #cecece !important;
+// }
+
+.recording-state {
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  display: inline-block;
+  background-color: red;
+}
+.recording-state.isRecording {
+  background-color: #3ed23e;
+}
+
+.search-field {
+  width: 180px !important;
+}
+@media (min-width: 1000px) { 
+  .search-field {
+    width: 400px !important;
+  }
+}
+
+.task-select {
+  max-width: 200px !important;
+  min-width: 200px !important;
+}
+@media (min-width: 1000px) { 
+  .task-select {
+    max-width: 390px !important;
+    min-width: auto !important;
+  }
+}
+
+.v-data-table-header th {
+  white-space: nowrap;
+}
+
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scroll {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.drag-and-drop-editor {
+  margin-top: -13px !important; 
+}
+
+.dropzone-custom-content {
+  height: 70px !important;
+}
+
+.drag-and-drop-editor .caption {
+  margin-bottom: 15px !important;
+}
+
+.ghost-preview {
+  background-color: #ffffff;
+}
+// .dropzone-custom-title {
+//   display: none !important;
+// }
