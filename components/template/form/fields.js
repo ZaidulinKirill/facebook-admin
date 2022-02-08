@@ -97,6 +97,7 @@ export const FormFieldsData = ({ onTypeChanged, languages }) => ({
       ...commonFields(onTypeChanged),
       { label: 'Default', value: 'default', md: 6 },
       { label: 'Width', value: 'md', type: 'autocomplete', items: columns, md: 3, suffix: '%', itemText: 'text', itemValue: 'value', required: true },
+      { label: 'Autocomplete', value: 'autoComplete', md: 3 },
       { label: 'Is required', value: 'required', type: 'checkbox', md: 3 },
       { label: 'Label', value: 'label', required: true, language: true },
       { label: 'Placeholder', value: 'placeholder', language: true }
