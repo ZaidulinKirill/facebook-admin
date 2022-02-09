@@ -67,7 +67,7 @@ const alignments = [{ value: 'flex-start', text: 'Left' }, { value: 'center', te
 export const FormFieldsData = ({ onTypeChanged, languages }) => ({
   [FormFields.COLOR]: {
     fields: [
-      { label: 'Width', value: 'md', type: 'autocomplete', items: columns, md: 4, suffix: '%', itemText: 'text', itemValue: 'value', required: true },
+      { label: 'Key', value: 'name', required: true, md: 6 },
       { label: 'Label', value: 'label', required: true, language: true }
     ],
     default: {
