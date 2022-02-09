@@ -23,7 +23,7 @@ export default {
    ** Headers of the page
    */
   head: {
-    title: 'Facebook at work',
+    title: 'Tomra',
     htmlAttrs: { lang: 'en' },
     meta: [
       { charset: 'utf-8' },
