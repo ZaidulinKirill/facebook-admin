@@ -217,7 +217,7 @@ export default {
   methods: {
     ...mapActions(['refreshCache']),
     openSitePage (subdomain) {
-      window.open(`https://${subdomain}.radioatwork.be?view=true`, '_blank')
+      window.open('https://tomra50.com?view=true', '_blank')
     },
     async createSite ({ item: { defaultLanguageId, defaultTemplateId, siteId, ...item } }) {
       item.subdomain = item.subdomain.toLowerCase().replace(/[^a-z]/g, '')

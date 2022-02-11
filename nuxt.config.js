@@ -9,8 +9,8 @@ const getApolloEndpoint = () => {
     }
   } else {
     return {
-      httpEndpoint: 'https://radioatwork.be/v1/graphql',
-      wsEndpoint: 'wss://radioatwork.be/v1/graphql',
+      httpEndpoint: 'https://admin.tomra50.com/v1/graphql',
+      wsEndpoint: 'wss://admin.tomra50.com/v1/graphql',
       browserHttpEndpoint: '/v1/graphql'
     }
   }
