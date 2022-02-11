@@ -40,7 +40,8 @@ export default () => {
               ...options,
               toolbar: 'undo redo | bold italic underline strikethrough | formatselect | alignleft aligncenter alignright alignjustify | numlist bullist | forecolor backcolor | link',
               quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote',
-              contextmenu: 'link'
+              contextmenu: 'link',
+              convert_urls: false
             })
           }
 
