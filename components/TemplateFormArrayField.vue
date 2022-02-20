@@ -73,6 +73,7 @@
       :max-width="dialogWidth"
       persistent
       :retain-focus="false"
+      scrollable
     >
       <v-card>
         <v-card-title>Edit item</v-card-title>
