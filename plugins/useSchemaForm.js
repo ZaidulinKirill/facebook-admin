@@ -41,7 +41,10 @@ export default () => {
               toolbar: 'undo redo | bold italic underline strikethrough | formatselect | alignleft aligncenter alignright alignjustify | numlist bullist | forecolor backcolor | link',
               quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote',
               contextmenu: 'link',
-              convert_urls: false
+              convert_urls: false,
+              force_br_newlines: true,
+              force_p_newlines: false,
+              forced_root_block: false
             })
           }
 
