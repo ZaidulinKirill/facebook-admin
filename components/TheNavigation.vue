@@ -54,12 +54,14 @@ export default {
         { link: '/dashboard', plural: 'Site', icon: 'mdi-earth', roles: [CLIENT] },
         { link: '/media', plural: 'Media', icon: 'mdi-folder-multiple-image', roles: [CLIENT] },
         { link: '/sites', plural: 'Sites', icon: 'mdi-earth', roles: [ADMIN] },
+        { link: '/posts', plural: 'Posts', icon: 'mdi-text-long', roles: [ADMIN] },
+        { link: '/messages', plural: 'Messages', icon: 'mdi-message-text-outline', roles: [ADMIN] },
         { link: '/languages', plural: 'Languages', icon: 'mdi-translate', roles: [ADMIN] },
         { link: '/fonts', plural: 'Fonts', icon: 'mdi-format-font', roles: [ADMIN] },
         { link: '/uploads', plural: 'Uploads', icon: 'mdi-cloud-upload', roles: [ADMIN] },
-        { link: '/users', plural: 'Users', icon: 'mdi-card-account-details', roles: [ADMIN] },
-        { link: '/modules', plural: 'Modules', icon: 'mdi-puzzle', roles: [ADMIN] },
-        { link: '/settings', plural: 'Configuration', icon: 'mdi-cog', roles: [ADMIN] }
+        { link: '/users', plural: 'Users', icon: 'mdi-card-account-details', roles: [ADMIN] }
+        // { link: '/modules', plural: 'Modules', icon: 'mdi-puzzle', roles: [ADMIN] },
+        // { link: '/settings', plural: 'Configuration', icon: 'mdi-cog', roles: [ADMIN] }
       ]
     },
     drawer: {
