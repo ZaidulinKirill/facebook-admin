@@ -92,7 +92,7 @@
             Cancel
           </v-btn>
           <v-btn color="primary" @click="submitForm">
-            {{ !!selectedItem ? 'Save' : 'Create' }}
+            {{ !!selectedItem ? 'Confirm' : 'Create' }}
           </v-btn>
         </v-card-actions>
       </v-card>
