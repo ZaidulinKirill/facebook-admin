@@ -33,7 +33,7 @@
               {{ challenges ? (challenges.find(x => x.id === item.challengeId) || {}).name : '' }}
             </template>
             <template #[`item.content`]="{item}">
-              <a v-if="item.type === 'image'" :href="`/api/uploads/${(item.data || {}).photo}`" target="_blank">
+              <a v-if="item.type === 'photo'" :href="`/api/uploads/${(item.data || {}).photo}`" target="_blank">
                 <img :src="`/api/uploads/w_130,h_130/${(item.data || {}).photo}`">
               </a>
               <video
