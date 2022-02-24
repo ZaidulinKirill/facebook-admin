@@ -32,13 +32,10 @@
             <template #[`item.challengeId`]="{item}">
               {{ challenges ? (challenges.find(x => x.id === item.challengeId) || {}).name : '' }}
             </template>
-            <template #[`item.image`]="{item}">
+            <template #[`item.content`]="{item}">
               <a v-if="item.type === 'image'" :href="`/api/uploads/${(item.data || {}).photo}`" target="_blank">
                 <img :src="`/api/uploads/w_130,h_130/${(item.data || {}).photo}`">
               </a>
-              <span v-else>—</span>
-            </template>
-            <template #[`item.video`]="{item}">
               <video
                 v-if="item.type === 'video'"
                 :src="`/api/uploads/${(item.data || {}).video}?range=true#t=0.5`"
@@ -47,16 +44,12 @@
                 style="background-color: black;"
                 controls
               />
-              <span v-else>—</span>
-            </template>
-            <template #[`item.audio`]="{item}">
               <audio
                 v-if="item.type === 'audio'"
                 :src="`/api/uploads/${(item.data || {}).audio}?range=true`"
                 width="130"
                 controls
               />
-              <span v-else>—</span>
             </template>
             <template #[`item.comments`]="{item}">
               <v-btn
@@ -198,9 +191,7 @@ export default {
         { text: 'User', value: 'user', selector: 'user {id name lastName}' },
         { text: 'Type', value: 'type' },
         { text: 'Description', value: 'data', sortable: false },
-        { text: 'Image', value: 'image', sortable: false, selectable: false },
-        { text: 'Video', value: 'video', sortable: false, selectable: false },
-        { text: 'Audio', value: 'audio', sortable: false, selectable: false },
+        { text: 'Content', value: 'content', sortable: false, selectable: false },
         { text: '', value: 'comments', selector: 'messages_aggregate { aggregate { count } }', sortable: false }
       ]
     },
