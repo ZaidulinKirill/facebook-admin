@@ -3,7 +3,7 @@
     <v-col cols="12">
       <v-card>
         <v-card-title class="d-flex align-center">
-          Messages
+          Comments
           <v-text-field
             v-model="search"
             class="ml-auto pl-2 mt-2 mt-sm-0"
