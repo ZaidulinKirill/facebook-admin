@@ -50,6 +50,7 @@
                 width="130"
                 controls
               />
+              <span v-if="item.type === 'text'">—</span>
             </template>
             <template #[`item.comments`]="{item}">
               <v-btn
