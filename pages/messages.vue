@@ -27,6 +27,9 @@
             <template #[`item.user`]="{item}">
               {{ item.user ? `${item.user.name} ${item.user.lastName}`.trim() : '[no value]' }}
             </template>
+            <template #[`item.challengeId`]="{item}">
+              {{ challenges && item.post ? (challenges.find(x => x.id === item.post.challengeId) || {}).name : '' }}
+            </template>
           </hasura-table>
         </v-card-text>
       </v-card>
@@ -37,6 +40,7 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import { HasuraTable } from 'vuetify-hasura-table'
+import { gql } from 'graphql-tag'
 
 export default {
   transition (to, from) {
@@ -44,6 +48,26 @@ export default {
   },
   components: {
     HasuraTable
+  },
+  apollo: {
+    sites: {
+      query: gql`{
+        sites: Site {
+          id
+          languages {
+            isDefault
+            languageId
+          }
+          pages {
+            id
+            modules (where: {systemType: {_eq: "challenges"}}) {
+              id
+              variables
+            }
+          }
+        }
+      }`
+    }
   },
   data () {
     return {
@@ -55,12 +79,30 @@ export default {
   },
   computed: {
     ...mapState('auth', ['user']),
+    defaultLanguage () {
+      if (!this.sites) {
+        return []
+      }
+
+      return this.sites[0].languages.find(x => x.isDefault)
+    },
+    challenges () {
+      if (!this.sites || !this.defaultLanguage) {
+        return []
+      }
+
+      return this.sites[0].pages[0].modules[0].variables.challenges.map(challenge => ({
+        id: challenge.id,
+        name: challenge[`name_${this.defaultLanguage.languageId}`]
+      }))
+    },
     defaultItem () {
       return { }
     },
     headers () {
       return [
         { text: 'Date', value: 'created_at', type: 'datetime' },
+        { text: 'Challenge', value: 'challengeId', selector: 'post {id challengeId}', sortable: false },
         { text: 'User', value: 'user', selector: 'user {id name lastName}' },
         { text: 'Text', value: 'text' }
       ]

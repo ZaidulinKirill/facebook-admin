@@ -29,6 +29,35 @@
             <template #[`item.data`]="{item}">
               {{ item.data ? item.data.description : '' }}
             </template>
+            <template #[`item.challengeId`]="{item}">
+              {{ challenges ? (challenges.find(x => x.id === item.challengeId) || {}).name : '' }}
+            </template>
+            <template #[`item.image`]="{item}">
+              <a v-if="item.type === 'image'" :href="`/api/uploads/${(item.data || {}).photo}`" target="_blank">
+                <img :src="`/api/uploads/w_130,h_130/${(item.data || {}).photo}`">
+              </a>
+              <span v-else>—</span>
+            </template>
+            <template #[`item.video`]="{item}">
+              <video
+                v-if="item.type === 'video'"
+                :src="`/api/uploads/${(item.data || {}).video}?range=true#t=0.5`"
+                width="130"
+                height="130"
+                style="background-color: black;"
+                controls
+              />
+              <span v-else>—</span>
+            </template>
+            <template #[`item.audio`]="{item}">
+              <audio
+                v-if="item.type === 'audio'"
+                :src="`/api/uploads/${(item.data || {}).audio}?range=true`"
+                width="130"
+                controls
+              />
+              <span v-else>—</span>
+            </template>
             <template #[`item.comments`]="{item}">
               <v-btn
                 text
@@ -96,6 +125,7 @@
 import { mapState, mapActions } from 'vuex'
 import { HasuraTable } from 'vuetify-hasura-table'
 import { HasuraForm } from 'vuetify-hasura-form'
+import { gql } from 'graphql-tag'
 
 export default {
   transition (to, from) {
@@ -105,8 +135,29 @@ export default {
     HasuraTable,
     HasuraForm
   },
+  apollo: {
+    sites: {
+      query: gql`{
+        sites: Site {
+          id
+          languages {
+            isDefault
+            languageId
+          }
+          pages {
+            id
+            modules (where: {systemType: {_eq: "challenges"}}) {
+              id
+              variables
+            }
+          }
+        }
+      }`
+    }
+  },
   data () {
     return {
+      sites: null,
       selectedFilters: [],
       search: '',
       isEditItemDialogOpened: false,
@@ -115,6 +166,23 @@ export default {
   },
   computed: {
     ...mapState('auth', ['user']),
+    defaultLanguage () {
+      if (!this.sites) {
+        return []
+      }
+
+      return this.sites[0].languages.find(x => x.isDefault)
+    },
+    challenges () {
+      if (!this.sites || !this.defaultLanguage) {
+        return []
+      }
+
+      return this.sites[0].pages[0].modules[0].variables.challenges.map(challenge => ({
+        id: challenge.id,
+        name: challenge[`name_${this.defaultLanguage.languageId}`]
+      }))
+    },
     defaultItem () {
       return { }
     },
@@ -126,8 +194,13 @@ export default {
     headers () {
       return [
         { text: 'Date', value: 'created_at', type: 'datetime' },
+        { text: 'Challenge', value: 'challengeId', sortable: false },
         { text: 'User', value: 'user', selector: 'user {id name lastName}' },
+        { text: 'Type', value: 'type' },
         { text: 'Description', value: 'data', sortable: false },
+        { text: 'Image', value: 'image', sortable: false, selectable: false },
+        { text: 'Video', value: 'video', sortable: false, selectable: false },
+        { text: 'Audio', value: 'audio', sortable: false, selectable: false },
         { text: '', value: 'comments', selector: 'messages_aggregate { aggregate { count } }', sortable: false }
       ]
     },
