@@ -23,6 +23,14 @@
             sort-desc
             @opened="isEditItemDialogOpened = true;selectedItem = $event"
           >
+            <template #[`item.edit`]="{item}">
+              <v-btn
+                icon
+                @click="isEditItemDialogOpened = true;selectedItem = item"
+              >
+                <v-icon>mdi-pencil</v-icon>
+              </v-btn>
+            </template>
             <template #[`item.user`]="{item}">
               {{ item.user ? `${item.user.name} ${item.user.lastName}`.trim() : '[no value]' }}
             </template>
@@ -85,6 +93,9 @@
       >
         <template #[`title`]="{}" />
         <template #[`field.comments`]="{}">
+          <h4 class="mt-3">
+            Comments
+          </h4>
           <hasura-table
             source="Message"
             :fields="messageHeaders"
@@ -98,6 +109,9 @@
               {{ item.user ? `${item.user.name} ${item.user.lastName}`.trim() : '[no value]' }}
             </template>
           </hasura-table>
+        </template>
+        <template #[`field.data`]="{item, $input}">
+          <json-editor :value="item.data" :height="230" @input="$input('data', $event)" />
         </template>
         <template #actions="{isNew, isSaving, submit}">
           <v-card-actions>
@@ -120,6 +134,7 @@ import { mapState, mapActions } from 'vuex'
 import { HasuraTable } from 'vuetify-hasura-table'
 import { HasuraForm } from 'vuetify-hasura-form'
 import { gql } from 'graphql-tag'
+import JsonEditor from '~/components/JsonEditor'
 
 export default {
   transition (to, from) {
@@ -127,7 +142,8 @@ export default {
   },
   components: {
     HasuraTable,
-    HasuraForm
+    HasuraForm,
+    JsonEditor
   },
   apollo: {
     sites: {
@@ -182,11 +198,14 @@ export default {
     },
     fields () {
       return [
+        { label: 'Type', value: 'type', type: 'select', items: ['text', 'audio', 'video', 'audio'], md: 6 },
+        { value: 'data' },
         { value: 'comments', selectable: false, editable: false }
       ]
     },
     headers () {
       return [
+        { text: 'Edit', value: 'edit', sortable: false, width: 24, selectable: false },
         { text: 'Date', value: 'created_at', type: 'datetime' },
         { text: 'Challenge', value: 'challengeId', sortable: false },
         { text: 'User', value: 'user', selector: 'user {id name lastName}' },

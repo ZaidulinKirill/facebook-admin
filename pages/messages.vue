@@ -23,7 +23,16 @@
             sort-desc
             :items-per-page="50"
             :footer-props="{ itemsPerPageOptions: [50, 100, 100, 200, -1] }"
+            @opened="isEditItemDialogOpened = true;selectedItem = $event"
           >
+            <template #[`item.edit`]="{item}">
+              <v-btn
+                icon
+                @click="isEditItemDialogOpened = true;selectedItem = item"
+              >
+                <v-icon>mdi-pencil</v-icon>
+              </v-btn>
+            </template>
             <template #[`item.user`]="{item}">
               {{ item.user ? `${item.user.name} ${item.user.lastName}`.trim() : '[no value]' }}
             </template>
@@ -34,12 +43,42 @@
         </v-card-text>
       </v-card>
     </v-col>
+    <v-dialog
+      v-model="isEditItemDialogOpened"
+      max-width="900"
+      :fullscreen="$vuetify.breakpoint.xsOnly"
+      persistent
+    >
+      <hasura-form
+        v-if="isEditItemDialogOpened"
+        ref="form"
+        :value="defaultItem"
+        source="Message"
+        :item-id="selectedItem.id"
+        :fields="fields"
+        @submit="onSubmit"
+      >
+        <template #[`title`]="{}" />
+        <template #actions="{isNew, isSaving, submit}">
+          <v-card-actions>
+            <v-spacer />
+            <v-btn color="primary" @click="isEditItemDialogOpened = false">
+              Cancel
+            </v-btn>
+            <v-btn color="primary" :loading="isSaving" @click="submit">
+              {{ isNew ? 'Save' : 'Create' }}
+            </v-btn>
+          </v-card-actions>
+        </template>
+      </hasura-form>
+    </v-dialog>
   </v-row>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
 import { HasuraTable } from 'vuetify-hasura-table'
+import { HasuraForm } from 'vuetify-hasura-form'
 import { gql } from 'graphql-tag'
 
 export default {
@@ -47,7 +86,8 @@ export default {
     return 'slide'
   },
   components: {
-    HasuraTable
+    HasuraTable,
+    HasuraForm
   },
   apollo: {
     sites: {
@@ -74,7 +114,10 @@ export default {
       selectedFilters: [],
       search: '',
       isEditItemDialogOpened: false,
-      selectedItem: {}
+      selectedItem: {},
+      fields: [
+        { label: 'Text', value: 'text', type: 'textArea', rows: 3, outlined: true, required: true }
+      ]
     }
   },
   computed: {
@@ -101,6 +144,7 @@ export default {
     },
     headers () {
       return [
+        { text: 'Edit', value: 'edit', sortable: false, width: 24, selectable: false },
         { text: 'Date', value: 'created_at', type: 'datetime' },
         { text: 'Challenge', value: 'challengeId', selector: 'post {id challengeId}', sortable: false },
         { text: 'User', value: 'user', selector: 'user {id name lastName}' },

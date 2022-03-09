@@ -1,5 +1,5 @@
 <template>
-  <div style="height: 700px" />
+  <div :style="`height: ${height}px`" />
 </template>
 <script>
 import 'jsoneditor/dist/jsoneditor.min.css'
@@ -18,6 +18,10 @@ export default {
     schemaRefs: {
       type: Object,
       default: null
+    },
+    height: {
+      type: Number,
+      default: 700
     }
   },
   mounted () {
