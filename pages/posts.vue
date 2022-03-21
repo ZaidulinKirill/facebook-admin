@@ -12,7 +12,42 @@
             solo
             single-line
             placeholder="Search by user"
-          />
+          >
+            <template #prepend-inner>
+              <v-menu offset-y>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-tooltip left>
+                    <template #activator="{on: tooltipOn}">
+                      <v-btn
+                        icon
+                        v-bind="attrs"
+                        v-on="{...on, ...tooltipOn}"
+                      >
+                        <v-icon>mdi-filter-plus</v-icon>
+                      </v-btn>
+                    </template>
+                    Add filter
+                  </v-tooltip>
+                </template>
+                <v-list>
+                  <v-list-item
+                    v-for="(item, index) in filterOptions"
+                    :key="index"
+                    @click="selectedFilters.push(item)"
+                  >
+                    <v-list-item-title>{{ item.name }}</v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+            </template>
+          </v-text-field>
+        </v-card-title>
+        <v-card-title class="my-0">
+          <v-row>
+            <v-col v-for="(filter, i) in selectedFilters" :key="i" cols="auto">
+              <selected-filter-option v-model="selectedFilters[i]" @remove="selectedFilters.splice(i, 1)" />
+            </v-col>
+          </v-row>
         </v-card-title>
         <v-card-text>
           <hasura-table
@@ -135,6 +170,7 @@ import { HasuraTable } from 'vuetify-hasura-table'
 import { HasuraForm } from 'vuetify-hasura-form'
 import { gql } from 'graphql-tag'
 import JsonEditor from '~/components/JsonEditor'
+import SelectedFilterOption from '~/components/SelectedFilterOption'
 
 export default {
   transition (to, from) {
@@ -143,7 +179,8 @@ export default {
   components: {
     HasuraTable,
     HasuraForm,
-    JsonEditor
+    JsonEditor,
+    SelectedFilterOption
   },
   apollo: {
     sites: {
@@ -176,6 +213,11 @@ export default {
   },
   computed: {
     ...mapState('auth', ['user']),
+    filterOptions () {
+      return [
+        { name: 'Role', value: 'role', items: this.challenges, itemText: 'name', itemValue: 'id' }
+      ]
+    },
     defaultLanguage () {
       if (!this.sites) {
         return []
@@ -225,6 +267,11 @@ export default {
     allFilters () {
       return {
         _and: [
+          Object.assign({}, ...this.selectedFilters
+            .filter(filter => filter.selected)
+            .map(filter => filter.resolver
+              ? filter.resolver(filter.selected)
+              : ({ [filter.value]: { [filter.filter || (filter.type === 'select' ? '_eq' : '_in')]: filter.selected } }))),
           this.search.length && {
             _or: [
               {
