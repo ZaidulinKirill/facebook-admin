@@ -215,7 +215,7 @@ export default {
     ...mapState('auth', ['user']),
     filterOptions () {
       return [
-        { name: 'Role', value: 'role', items: this.challenges, itemText: 'name', itemValue: 'id' }
+        { name: 'Challenge', value: 'challengeId', items: this.challenges, itemText: 'name', itemValue: 'id' }
       ]
     },
     defaultLanguage () {
